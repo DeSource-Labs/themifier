@@ -118,7 +118,7 @@ function shouldApply(
  * Apply theme profile to page using dynamic engine
  * @param theme Theme ID to apply
  * @param settings User settings for configuration
- * @param detection Auto-detection result (for logging/debugging)
+ * @param domain Current domain
  *
  * Initializes DynamicThemeEngine with:
  * - Color transformation
@@ -134,15 +134,6 @@ function applyProfile(theme: ThemeId, settings: UserSettings, domain: string) {
 
   const engine = getEngineInstance();
   engine.updateTheme(profile, { enableInlineObservation: advancedDynamic });
-
-  // Metrics for performance monitoring (debug only - set __THEMIFIER_DEBUG__ on window)
-  if (typeof window !== 'undefined' && (window as any).__THEMIFIER_DEBUG__) {
-    const stats = engine.getStats();
-    // Log is intentional for debug builds to monitor performance
-    if (stats) {
-      console.info('Themifier engine stats available for monitoring');
-    }
-  }
 }
 
 /**

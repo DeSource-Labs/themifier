@@ -450,6 +450,8 @@ export function clamp(value: number, min: number, max: number): number {
 
 /**
  * Clear color caches (useful when memory optimization needed)
+ *
+ * TODO: use this method on extension deactivation if caching is implemented
  */
 export function clearColorCache(): void {
   rgbaParseCache.clear();

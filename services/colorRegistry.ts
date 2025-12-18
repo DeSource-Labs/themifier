@@ -58,14 +58,6 @@ export class ColorRegistry {
   /** Maximum colors to store in registry */
   private readonly maxSize: number;
 
-  /** Statistics for debugging and monitoring */
-  private stats = {
-    hits: 0,
-    misses: 0,
-    registrations: 0,
-    evictions: 0,
-  };
-
   /**
    * Create a new color registry
    * @param maxSize Maximum colors to store (default 1000). Older entries evicted when exceeded.
@@ -122,8 +114,6 @@ export class ColorRegistry {
       this.themeRegistry.set(themeId, new Set());
     }
     this.themeRegistry.get(themeId)!.add(key);
-
-    this.stats.registrations++;
   }
 
   /**
@@ -142,14 +132,12 @@ export class ColorRegistry {
     const registered = this.registry.get(key);
 
     if (!registered) {
-      this.stats.misses++;
       return null;
     }
 
     // Verify this is the same color type and theme
     if (registered.colorType !== colorType || registered.themeId !== themeId) {
       // Same RGB but different context - not a match
-      this.stats.misses++;
       return null;
     }
 
@@ -157,29 +145,7 @@ export class ColorRegistry {
     registered.timestamp = Date.now();
     registered.usageCount++;
 
-    this.stats.hits++;
     return registered.transformedHex;
-  }
-
-  /**
-   * TODO: NOT USED
-   *
-   * Batch register multiple color transformations
-   * More efficient than individual register() calls
-   * @param colors Array of color registration parameters
-   */
-  public registerBatch(
-    colors: Array<{
-      originalRGB: RGBA;
-      originalHex: string;
-      transformedHex: string;
-      colorType: 'background' | 'text' | 'border';
-      themeId: string;
-    }>
-  ): void {
-    for (const color of colors) {
-      this.register(color);
-    }
   }
 
   /**
@@ -203,25 +169,6 @@ export class ColorRegistry {
   public clear(): void {
     this.registry.clear();
     this.themeRegistry.clear();
-    this.stats = {
-      hits: 0,
-      misses: 0,
-      registrations: 0,
-      evictions: 0,
-    };
-  }
-
-  /**
-   * Get a registered color entry with full metadata
-   *
-   * **Useful for debugging**
-   *
-   * @param originalRGB Original color
-   * @returns RegisteredColor if found, null otherwise
-   */
-  public getEntry(originalRGB: RGBA): RegisteredColor | null {
-    const key = this.getKey(originalRGB);
-    return this.registry.get(key) || null;
   }
 
   /**
@@ -248,43 +195,7 @@ export class ColorRegistry {
       if (keys) {
         keys.delete(oldestKey);
       }
-
-      this.stats.evictions++;
     }
-  }
-
-  /**
-   * Get registry statistics for monitoring and debugging
-   * @returns Object with hit/miss counts and eviction metrics
-   */
-  public getStats(): {
-    hits: number;
-    misses: number;
-    hitRate: number;
-    registrations: number;
-    evictions: number;
-    currentSize: number;
-    maxSize: number;
-  } {
-    const totalLookups = this.stats.hits + this.stats.misses;
-    return {
-      ...this.stats,
-      hitRate: totalLookups > 0 ? (this.stats.hits / totalLookups) * 100 : 0,
-      currentSize: this.registry.size,
-      maxSize: this.maxSize,
-    };
-  }
-
-  /**
-   * Export registry as JSON for persistence
-   * Useful for development/debugging
-   */
-  public toJSON(): Record<string, RegisteredColor> {
-    const result: Record<string, RegisteredColor> = {};
-    for (const [key, entry] of this.registry.entries()) {
-      result[key] = entry;
-    }
-    return result;
   }
 }
 

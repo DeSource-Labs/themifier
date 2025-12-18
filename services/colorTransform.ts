@@ -544,18 +544,3 @@ export function clearColorCache(): void {
   clearMatrixCache();
   clearPaletteRegistry();
 }
-
-/**
- * Get cache statistics for debugging
- */
-export function getCacheStats(): {
-  transformCacheSize: number;
-  parseCacheSize: number;
-  modificationCacheSize: number;
-} {
-  return {
-    transformCacheSize: transformCache.size,
-    parseCacheSize: parseCache.size,
-    modificationCacheSize: colorModificationCache.size,
-  };
-}

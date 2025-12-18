@@ -65,46 +65,6 @@ export function registerColor(type: ColorType, rgb: RGBA, value: string): string
 }
 
 /**
- * Get all registered colors for a specific type
- *
- * @param type Color type (background, text, border)
- * @returns Map of RGB keys to transformed values
- */
-export function getColorPalette(type: ColorType): Map<string, string> {
-  return colorPalettes.get(type) ?? new Map();
-}
-
-/**
- * Get statistics about registered colors
- *
- * @returns Palette statistics by type
- */
-export function getPaletteStats(): {
-  background: number;
-  text: number;
-  border: number;
-  total: number;
-} {
-  return {
-    background: colorPalettes.get('background')?.size ?? 0,
-    text: colorPalettes.get('text')?.size ?? 0,
-    border: colorPalettes.get('border')?.size ?? 0,
-    total: Array.from(colorPalettes.values()).reduce((sum, map) => sum + map.size, 0),
-  };
-}
-
-/**
- * TODO: NOT USED
- *
- * Clear all registered colors for a specific type
- *
- * @param type Color type (background, text, border)
- */
-export function clearPaletteType(type: ColorType): void {
-  colorPalettes.get(type)?.clear();
-}
-
-/**
  * Clear all registered colors (all types)
  * Call this when theme changes
  */
@@ -117,36 +77,4 @@ export function clearColorPalette(): void {
  */
 export function disposePalette(): void {
   colorPalettes.clear();
-}
-
-/**
- * TODO: NOT USED
- *
- * Export palette as JSON for debugging
- *
- * @returns JSON representation of all palettes
- */
-export function exportPaletteJSON(): Record<ColorType, Record<string, string>> {
-  const result: Record<string, Record<string, string>> = {};
-
-  colorPalettes.forEach((palette, type) => {
-    result[type] = Object.fromEntries(palette.entries());
-  });
-
-  return result as Record<ColorType, Record<string, string>>;
-}
-
-/**
- * TODO: NOT USED
- *
- * Import palette from JSON
- * Useful for hydration/restoration
- *
- * @param json JSON representation of palettes
- */
-export function importPaletteJSON(json: Record<ColorType, Record<string, string>>): void {
-  Object.entries(json).forEach(([type, colors]) => {
-    const palette = new Map(Object.entries(colors));
-    colorPalettes.set(type as ColorType, palette);
-  });
 }

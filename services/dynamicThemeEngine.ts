@@ -742,25 +742,6 @@ export class DynamicThemeEngine {
   }
 
   /**
-   * Get current transformation statistics
-   * Useful for debugging and monitoring
-   */
-  getStats(): {
-    managedSheetCount: number;
-    injectedStyleCount: number;
-    transformedElementCount: number;
-    registryHitRate: number;
-  } {
-    const registryStats = globalColorRegistry.getStats();
-    return {
-      managedSheetCount: this.managedSheetCount,
-      injectedStyleCount: this.injectedStyles.size,
-      transformedElementCount: this.transformedElementCount,
-      registryHitRate: registryStats.hitRate,
-    };
-  }
-
-  /**
    * Clear applied theme artifacts without destroying observers.
    * Lets callers stop applying while keeping the engine reusable
    */

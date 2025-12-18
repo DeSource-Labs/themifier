@@ -21,7 +21,7 @@ export interface ColorMatrix {
   // Matrix represented as flat array for performance
   // [r11, r12, r13, r21, r22, r23, r31, r32, r33]
   values: number[];
-  // Metadata for debugging
+  // Metadata
   type: 'gamma' | 'contrast' | 'brightness' | 'combined';
   description: string;
 }
@@ -72,26 +72,6 @@ export function applyColorMatrix(rgb: RGBA, matrix: ColorMatrix): RGBA {
     b: Math.round(clamp(bNew) * 255),
     a,
   };
-}
-
-/**
- * TODO: NOT USED
- *
- * Apply color matrix to a single channel value
- * Used when only transforming one channel
- */
-export function applyMatrixToValue(
-  value: number, // 0-255
-  matrix: ColorMatrix,
-  channel: 'r' | 'g' | 'b'
-): number {
-  const channels = { r: [0, 1, 2], g: [3, 4, 5], b: [6, 7, 8] };
-  const [i, j, k] = channels[channel];
-  const m = matrix.values;
-  const normalized = value / 255;
-
-  const result = m[i] * normalized + m[j] * normalized + m[k] * normalized;
-  return Math.round(Math.max(0, Math.min(1, result)) * 255);
 }
 
 /**
@@ -262,51 +242,6 @@ export function createFilterMatrix(theme: ThemeProfile, isDarkMode: boolean = tr
 }
 
 /**
- *
- * TODO: NOT USED
- *
- * Saturation adjustment via matrix
- *
- * This is a simplified saturation adjustment.
- * True saturation adjustment in RGB space is complex.
- *
- * @param saturation Saturation factor (1 = unchanged, <1 = desaturated, >1 = saturated)
- * @returns Color matrix
- *
- * Note: This uses luma-preserving method
- * Red weight: 0.299, Green: 0.587, Blue: 0.114
- */
-export function createSaturationMatrix(saturation: number = 1.0): ColorMatrix {
-  if (saturation === 1) {
-    return IDENTITY_MATRIX;
-  }
-
-  // Luma coefficients (standard for desaturation)
-  const lR = 0.299;
-  const lG = 0.587;
-  const lB = 0.114;
-
-  // Apply saturation formula
-  const s = saturation;
-
-  return {
-    values: [
-      lR * (1 - s) + s,
-      lG * (1 - s),
-      lB * (1 - s),
-      lR * (1 - s),
-      lG * (1 - s) + s,
-      lB * (1 - s),
-      lR * (1 - s),
-      lG * (1 - s),
-      lB * (1 - s) + s,
-    ],
-    type: 'combined',
-    description: `Saturation ${(saturation * 100).toFixed(0)}%`,
-  };
-}
-
-/**
  * Matrix caching for performance
  * Pre-compute matrices once per theme to avoid repeated calculations
  */
@@ -337,19 +272,4 @@ export function getCachedFilterMatrix(theme: ThemeProfile, isDarkMode: boolean):
  */
 export function clearMatrixCache(): void {
   matrixCache.clear();
-}
-
-/**
- * Debug: Print matrix in readable format
- */
-export function printMatrix(matrix: ColorMatrix): string {
-  const m = matrix.values;
-  return `
-Matrix: ${matrix.description}
-┌           ┐
-│ ${m[0].toFixed(3)} ${m[1].toFixed(3)} ${m[2].toFixed(3)} │
-│ ${m[3].toFixed(3)} ${m[4].toFixed(3)} ${m[5].toFixed(3)} │
-│ ${m[6].toFixed(3)} ${m[7].toFixed(3)} ${m[8].toFixed(3)} │
-└           ┘
-  `.trim();
 }
