@@ -1,0 +1,76 @@
+name: Bug Report
+description: Create a report to help us improve
+labels: bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug: Please describe the issue clearly and provide steps to reproduce.
+  - type: input
+    id: title
+    attributes:
+      label: Bug Title
+      description: Short, descriptive title of the bug
+      placeholder: Theme not applying to Google Translate
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? What did you expect?
+      placeholder: Describe the bug in detail
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions to reproduce the bug
+      placeholder: |
+        1. Open Google Translate (translate.google.com)
+        2. Select Dark theme from extension popup
+        3. Observe colors
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs Actual Behavior
+      description: What did you expect to happen? What actually happened?
+      placeholder: |
+        **Expected:** Dark theme applied with readable text contrast
+        **Actual:** Background changed but text color remains unreadable
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, browser, extension version, etc.
+      placeholder: |
+        - OS: macOS 14.2
+        - Browser: Chrome 120
+        - Themifier Version: 1.0.0
+        - Website: google.com
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Add screenshots if applicable
+      placeholder: Drag and drop images here
+    validations:
+      required: false
+  - type: textarea
+    id: code
+    attributes:
+      label: Minimal Reproduction
+      description: Provide a minimal code sample if possible
+      placeholder: |
+        ```js
+        // Your code here
+        ```
+    validations:
+      required: false
