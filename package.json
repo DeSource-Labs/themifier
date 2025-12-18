@@ -1,0 +1,56 @@
+{
+  "name": "themifier",
+  "description": "Adaptive Styling Engine for Your Browser. Customize the look and feel of websites with ease.",
+  "private": true,
+  "version": "0.5.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "vue-tsc --noEmit",
+    "postinstall": "wxt prepare",
+    "lint": "eslint . --ext .ts,.tsx,.vue",
+    "lint:fix": "eslint . --ext .ts,.tsx,.vue --fix",
+    "format": "prettier --write .",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^6.0.3",
+    "@vueuse/core": "^14.1.0",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.26",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.32",
+    "@wxt-dev/module-vue": "^1.0.3",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-vue": "^10.6.2",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
+    "sass": "^1.97.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.50.0",
+    "vue-eslint-parser": "^10.2.0",
+    "vue-tsc": "^3.1.8",
+    "wxt": "^0.20.13"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue,ts,tsx}": [
+      "pnpm lint:fix",
+      "pnpm format"
+    ]
+  }
+}

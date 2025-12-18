@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+@import './reset.css';
+
+html,
+body {
+  font-size: 16px;
+  overflow: hidden;
+}
+
+body {
+  font-family:
+    'Nunito',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  background: var(--ext-bg-gradient);
+  color: var(--ext-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+#app {
+  max-height: 600px;
+  width: 420px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding-left: 6px; /* To prevent layout shift when scrollbar appears */
+}
+
+#app::-webkit-scrollbar {
+  width: 6px;
+}
+
+#app::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#app::-webkit-scrollbar-thumb {
+  background: var(--ext-accent);
+  opacity: 0.3;
+  border-radius: 3px;
+}
+
+#app::-webkit-scrollbar-thumb:hover {
+  opacity: 0.5;
+}
